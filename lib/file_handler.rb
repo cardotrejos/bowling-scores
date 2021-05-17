@@ -21,7 +21,6 @@ class FileValidations
     return false unless extension_valid?
     return false unless @error.nil?
     return false unless structure_valid?
-
   rescue TypeError
     @error = 'Please, check if the file name is correct'
   end
