@@ -13,7 +13,12 @@ class Table
       c.add_row(['Frame', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
       c.add_separator
       @data.each_key do |player|
-        @data[player]
+        c.add_row([player])
+        c.add_separator
+        c.add_row(['Pinfalls'])
+        c.add_separator
+        c.add_row(['Score'])
+        c.add_separator
       end
     end
     puts table

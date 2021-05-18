@@ -10,4 +10,5 @@ if file.validations.error
 else
   table = Table.new(file.data)
   table.table_output
+  puts file.data
 end

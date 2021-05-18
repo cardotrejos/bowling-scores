@@ -21,6 +21,8 @@ class FileValidations
     return false unless extension_valid?
     return false unless @error.nil?
     return false unless structure_valid?
+
+    true
   rescue TypeError
     @error = 'Please, check if the file name is correct'
   end
@@ -66,11 +68,11 @@ class FileHandler
     @lines = file.readlines.map(&:chomp)
 
     @lines.each do |line|
-      player_throws = line.split('  ')
-      if @data[player_throws[0]]
-        @data[player_throws[0]].push(player_throws[1])
+      player_throw = line.split(' ')
+      if @data[player_throw[0]]
+        @data[player_throw[0]].push(player_throw[1])
       else
-        @data[player_throws[0]] = [player_throws[1]]
+        @data[player_throw[0]] = [player_throw[1]]
       end
     end
   end
