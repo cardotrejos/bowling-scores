@@ -8,7 +8,7 @@ file = FileHandler.new(ARGV[0], '.txt', FileValidations)
 if file.validations.error
   puts file.validations.error
 else
-  table = Table.new(file.data)
-  table.table_output
+  # table = Table.new(file.data)
+  # table.table_output
   puts file.data
 end

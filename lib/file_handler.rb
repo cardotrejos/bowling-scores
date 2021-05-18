@@ -63,17 +63,10 @@ class FileHandler
 
   private
 
-  def process_output
-    file = File.open(@filename)
-    @lines = file.readlines.map(&:chomp)
-
-    @lines.each do |line|
-      player_throw = line.split(' ')
-      if @data[player_throw[0]]
-        @data[player_throw[0]].push(player_throw[1])
-      else
-        @data[player_throw[0]] = [player_throw[1]]
-      end
+  def split_data(data)
+    data.split("\n").map do |el|
+      turn = el.split(' ')
+      { player_name: turn[0], score: turn[1] }
     end
   end
 end
