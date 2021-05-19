@@ -52,13 +52,36 @@ end
 
 # FileReader proccess the score file if correct, and stores the player names and scores in a Hash
 class FileHandler
-  attr_reader :data, :validations
+  attr_reader :data, :validations, :player_hash
 
   def initialize(filename, extension, validations)
-    @data = {}
+    @player_hash = {}
     @filename = filename
     @validations = validations.new(filename, extension)
-    process_output if @validations.check_file
+    organize_data if @validations.check_file
+  end
+
+  def organize_data
+    file = File.read(@filename)
+    @player_hash = get_players(file)
+
+    split_data(file).each do |turn|
+      player_name = turn[:player_name]
+      score = turn[:score] == 'F' ? 'F' : turn[:score].to_i
+
+      number_turn = @player_hash[player_name].size
+      current_turn = "turn: #{number_turn}".to_sym
+      next_turn = "turn: #{number_turn + 1}".to_sym
+
+      if number_turn.zero? || @player_hash[player_name][current_turn][:turn_b]
+        @player_hash[player_name][next_turn] = { turn_a: score }
+        @player_hash[player_name][next_turn][:turn_b] = 0 if score == 10 && number_turn != 10
+      else
+        @player_hash[player_name][current_turn][:turn_b] = score
+      end
+    end
+
+    @player_hash
   end
 
   private
@@ -68,5 +91,15 @@ class FileHandler
       turn = el.split(' ')
       { player_name: turn[0], score: turn[1] }
     end
+  end
+
+  def get_players(data)
+    player_hash = {}
+    split_data(data).each do |turn|
+      player_name = turn[:player_name]
+      player_hash[player_name] = {} unless player_hash[player_name]
+    end
+
+    player_hash
   end
 end
